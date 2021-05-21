@@ -31,7 +31,7 @@ bool is_a_leap_year(long);
 long query_for_integer(string);
 long query_for_valid_day(long month) ;
 long query_for_valid_month();
-long return_days_in_month(long, long);
+long return_days_in_a_month(long, long);
 long return_days_in_year(long);
 long query_for_integer(string);
 long return_year(long julian_value); 
@@ -40,27 +40,73 @@ long return_day(long julian_value);
 date *return_date(long julian_value);
 
 long return_year(long julian_value){
-  long year = 1;
   long year_value = 0;
-
-  for (long year; julian_value - 365 > 0; year++){
-    if (is_a_leap_year(year) == false){
-      year_value = julian_value - 365;
-      
-    }
-    else{
-      year_value = julian_value - 366;
-      
-    }
+  long year_output = 1900;
+  for (long year = 1900; julian_value > return_days_in_year(year); year++){
+    julian_value -= return_days_in_year(year);
+    year_output++;
   }
-  return year_value;
+  return year_output;
+}
+
+long return_month(long julian_value){
+  long month = 0;
+  long year = 0;
+  for (year = 1900; julian_value > return_days_in_year(year); year++){
+    julian_value -= return_days_in_year(year);
+  }
+
+  for (month = 1; julian_value > return_days_in_a_month(year, month); month++){
+    julian_value -= return_days_in_a_month(year, month);
+  }
+  return month;
 }
 
 
+long return_day(long julian_value){
+  long month = 0;
+  long year = 0;
+  for (year = 1900; julian_value > return_days_in_year(year); year++){
+    julian_value -= return_days_in_year(year);
+  }
 
+  for (month = 1; julian_value > return_days_in_a_month(year, month); month++){
+    julian_value -= return_days_in_a_month(year, month);
+  }
+  return julian_value;
+}
+
+
+date *return_date(long julian_value){
+  date *final_date;
+  final_date = new date;
+    final_date->year = return_year(julian_value);
+    final_date->month = return_month(julian_value);
+    final_date->day = return_day(julian_value);
+  return final_date;
+}
+
+// return a pointer to a date
+long return_days_in_year(long year){
+  return ((is_a_leap_year(year)) ? 366 : 365);
+}
+
+bool is_a_leap_year(long year){
+bool return_value = false;
+  if ( (year % 400 ==0) || ((year % 4 == 0) && (year % 100 != 0))){
+      return_value = true;
+      }
+  else{
+      return_value = false;
+    }
+return return_value;
+}
 
 
 // OLD PROGRAm code
+
+
+
 long query_for_integer(string prompt) {
 long answer = 0;
 
@@ -81,21 +127,6 @@ bool return_value = false;
   return return_value;
 }
 
-
-bool is_a_leap_year(long year){
-bool return_value = false;
-  if ( (year % 400 ==0) || ((year % 4 == 0) && (year % 100 != 0))){
-      return_value = true;
-      }
-  else{
-      return_value = false;
-    }
-return return_value;
-}
-
-long return_days_in_year(long year){
-  return ((is_a_leap_year(year)) ? 366 : 365);
-}
 
 long return_days_in_a_month(long year_provided, long month_provided){
   long return_value =0;
@@ -151,11 +182,11 @@ return day;
 
 
 int main() {
+  long julian_value = 0;
+  julian_value = query_for_integer("Enter a Julian value: ");
+ 
 
-   long julian_value = query_for_integer("Enter a Julian value: ") ;
-
-  cout << return_year(julian_value);
 
   
-   return 1 ;
+return 0;
 }
