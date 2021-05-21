@@ -1,4 +1,5 @@
 #include <iostream>
+#include <string>
 using namespace std;
 
 const long JAN = 1;
@@ -38,6 +39,7 @@ long return_year(long julian_value);
 long return_month(long julian_value);
 long return_day(long julian_value);
 date *return_date(long julian_value);
+void  display_date(date*); 
 
 long return_year(long julian_value){
   long year_value = 0;
@@ -52,6 +54,8 @@ long return_year(long julian_value){
 long return_month(long julian_value){
   long month = 0;
   long year = 0;
+
+
   for (year = 1900; julian_value > return_days_in_year(year); year++){
     julian_value -= return_days_in_year(year);
   }
@@ -59,6 +63,7 @@ long return_month(long julian_value){
   for (month = 1; julian_value > return_days_in_a_month(year, month); month++){
     julian_value -= return_days_in_a_month(year, month);
   }
+
   return month;
 }
 
@@ -115,7 +120,7 @@ long answer = 0;
 
   return answer;
 }
-
+/*
 bool is_month_valid(long month){
 bool return_value = false;
   if (month >= 1 && month <= 12){
@@ -126,7 +131,7 @@ bool return_value = false;
   }
   return return_value;
 }
-
+*/
 
 long return_days_in_a_month(long year_provided, long month_provided){
   long return_value =0;
@@ -137,7 +142,7 @@ long return_days_in_a_month(long year_provided, long month_provided){
 
 return return_value;
 }
-
+/*
 long compute_julian_day(long year_provided, long month_provided, long day_provided){
 
 long julian_number_computed = 0;
@@ -179,14 +184,16 @@ long query_for_valid_day(long year, long month){
   while (is_day_valid(year, month, day) == false);
 return day;
 }
-
+*/
 
 int main() {
   long julian_value = 0;
   julian_value = query_for_integer("Enter a Julian value: ");
  
+ date *newdate;
+ newdate = return_date(julian_value);
 
-
+ cout << return_month_string(julian_value) << "/" << newdate->day << "/" << newdate->year;
   
 return 0;
 }
